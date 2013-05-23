@@ -1,0 +1,8 @@
+Trableshooting options
+
+forcefb1          Force Framebuffer (1024x768@16bit)
+forcefb2          Force Framebuffer (800x600@16bit)
+forcefb3          Force Framebuffer (640x480@16bit)
+crusoe forcesvga  Force 800x600@16bit on X.org
+crusoe noxmenu    Do not show X-based menu (untested!)
+

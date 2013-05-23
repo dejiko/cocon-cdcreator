@@ -1,0 +1,81 @@
+#!/bin/bash
+
+# opencocon CD creator
+
+if [ ! `echo $SYSLINUX_BIN_PATH` ];
+then
+  SYSLINUX_BIN_PATH="/usr/lib/syslinux/"
+fi
+
+if [ $3 ];
+then
+
+  if [ ! `which genisoimage` ];
+  then
+    echo "Error: genisoimage is not found."
+    exit 2
+  fi
+
+  
+  # Create work directory
+  PWD=`pwd`
+  IMAGE_DATE=`date +%Y%m%d`
+  mkdir -p $PWD/$IMAGE_DATE/isolinux/
+
+  # Copy isolinux
+  if [ ! -r $SYSLINUX_BIN_PATH/isolinux.bin ];
+  then
+    echo "Error: isolinux.bin is not found. Please specify SYSLINUX_BIN_PATH."
+    exit 2
+  fi
+
+  cp -L $SYSLINUX_BIN_PATH/isolinux.bin  $PWD/$IMAGE_DATE/isolinux/isolinux.bin
+
+  # Copy image to work directory
+  if [ ! -r $1/bzImage-cocon486.bin ];
+  then
+    echo "Error: bzImage-cocon486.bin is not found."
+    exit 2
+  fi
+
+  cp -L $1/bzImage-cocon486.bin  $PWD/$IMAGE_DATE/bzImage
+
+  if [ ! -r $1/opencocon-cocon486.squashfs ];
+  then
+    echo "Error: opencocon-cocon486.squashfs is not found."
+    exit 2
+  fi
+
+  cp -L $1/opencocon-cocon486.squashfs  $PWD/$IMAGE_DATE/crusoe.sqs
+
+
+  if [ ! -r $1/initramfs-crusoe-image-cocon486.cramfs.gz ];
+  then
+    echo "Error: initramfs-crusoe-image-cocon486.cramfs.gz is not found."
+    exit 2
+  fi
+
+  cp -L $1/initramfs-crusoe-image-cocon486.cramfs.gz  $PWD/$IMAGE_DATE/crusoe.gz
+
+
+  # Copy some file from define directory
+  cp -RL $2/*  $PWD/$IMAGE_DATE/
+
+
+  # Create CD image
+  genisoimage -v -r -J -o $PWD/opencocon-$3-$IMAGE_DATE.iso -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -A OPENCOCON $PWD/$IMAGE_DATE/
+
+  if [ ! -r $PWD/opencocon-$3-$IMAGE_DATE.iso ];
+  then
+    echo "Error: genisoimage failed."
+    exit 2
+  fi
+  cd $PWD
+  md5sum opencocon-$3-$IMAGE_DATE.iso > $PWD/opencocon-$3-$IMAGE_DATE.iso.md5
+
+
+else
+  echo "usage: cocon-cdcreator [deploy image path] [define dir] [version]"
+fi
+
+

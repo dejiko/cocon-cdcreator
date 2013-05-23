@@ -1,0 +1,12 @@
+Welcome to opencocon, live cd edition.
+It is very experimental edition, then you may use your own risk.
+
+For disk-space saving, This image not contains source code of each components.
+If you want source code and patches, please access to https://github.com/dejiko/meta-cocon/ and get buildtree.
+
+Some License information document is located in /licenses of your opencocon CD.
+
+http://opencocon.org/ for more information.
+Thank you for using opencocon, kon-kon! :)
+
+( Check [F2] key and show trableshooting options. )
