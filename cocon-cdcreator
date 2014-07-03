@@ -18,9 +18,10 @@ then
 
   
   # Create work directory
-  PWD=`pwd`
+  CURPWD=`pwd`
   IMAGE_DATE=`date +%Y%m%d`
-  mkdir -p $PWD/$IMAGE_DATE/isolinux/
+  WORKDIR="$CURPWD/image-$IMAGE_DATE"
+  mkdir -p $WORKDIR/isolinux/
 
   # Copy isolinux
   if [ ! -r $SYSLINUX_BIN_PATH/isolinux.bin ];
@@ -29,7 +30,8 @@ then
     exit 2
   fi
 
-  cp -L $SYSLINUX_BIN_PATH/isolinux.bin  $PWD/$IMAGE_DATE/isolinux/isolinux.bin
+  cp -L $SYSLINUX_BIN_PATH/isolinux.bin  $WORKDIR/isolinux/isolinux.bin
+  cp -L $SYSLINUX_BIN_PATH/menu.c32  $WORKDIR/isolinux/menu.c32
 
   # Copy image to work directory
   if [ ! -r $1/bzImage-cocon486.bin ];
@@ -38,7 +40,7 @@ then
     exit 2
   fi
 
-  cp -L $1/bzImage-cocon486.bin  $PWD/$IMAGE_DATE/bzImage
+  cp -L $1/bzImage-cocon486.bin  $WORKDIR/bzImage
 
   if [ ! -r $1/opencocon-cocon486.squashfs ];
   then
@@ -46,7 +48,7 @@ then
     exit 2
   fi
 
-  cp -L $1/opencocon-cocon486.squashfs  $PWD/$IMAGE_DATE/crusoe.sqs
+  cp -L $1/opencocon-cocon486.squashfs  $WORKDIR/crusoe.sqs
 
 
   if [ ! -r $1/initramfs-crusoe-image-cocon486.cramfs.gz ];
@@ -55,23 +57,23 @@ then
     exit 2
   fi
 
-  cp -L $1/initramfs-crusoe-image-cocon486.cramfs.gz  $PWD/$IMAGE_DATE/crusoe.gz
+  cp -L $1/initramfs-crusoe-image-cocon486.cramfs.gz  $WORKDIR/crusoe.gz
 
 
   # Copy some file from define directory
-  cp -RL $2/*  $PWD/$IMAGE_DATE/
+  cp -RL $2/*  $WORKDIR/
 
 
   # Create CD image
-  genisoimage -v -r -J -o $PWD/opencocon-$3-$IMAGE_DATE.iso -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -A OPENCOCON $PWD/$IMAGE_DATE/
+  genisoimage -v -r -J -o $CURPWD/opencocon-$3-$IMAGE_DATE.iso -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -A OPENCOCON $WORKDIR/
 
-  if [ ! -r $PWD/opencocon-$3-$IMAGE_DATE.iso ];
+  if [ ! -r $CURPWD/opencocon-$3-$IMAGE_DATE.iso ];
   then
     echo "Error: genisoimage failed."
     exit 2
   fi
-  cd $PWD
-  md5sum opencocon-$3-$IMAGE_DATE.iso > $PWD/opencocon-$3-$IMAGE_DATE.iso.md5
+  cd $CURPWD
+  md5sum opencocon-$3-$IMAGE_DATE.iso > $CURPWD/opencocon-$3-$IMAGE_DATE.iso.md5
 
 
 else
