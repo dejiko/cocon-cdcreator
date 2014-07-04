@@ -1,0 +1,28 @@
+
+cocon.cnf spec. (Draft)
+
+各パーティションのトップに cocon.cnf ファイルがあると、それを設定ファイルとして読み込み、自動接続やキー配列の設定などを行えるものです。
+
+・読み込み手順
+以下の順番に読み込みますが、同じ設定項目が複数ドライブにあった場合、反映される順番は上下逆となります。
+(1) ここんイメージ内 /usr/share/cocon/default.cnf (ここはいじらないことをお勧めます)
+(2) 起動ディスクのルートディレクトリにある cocon.cnf
+(3) それ以外のディスクのトップにある cocon.cnf
+
+・設定できる項目
+# ← 最初に # のつく行はコメントになります
+COCON_KBD_CONSOLE=jp106 Console上でのキーマップ
+COCON_KBD_X_MODEL=jp106 X.org上でのキーマップ
+COCON_KBD_X_LAYOUT=jp
+COCON_KBD_X_VARIANT=
+
+COCON_AUTOCONNECT=rdp 自動接続を使用する
+COCON_POWEROFF_AFTER_AUTOCONNECT=1 自動接続後に自動シャットダウンする
+
+COCON_RDP_HOST=hostname　　　　自動接続時のホスト名(メニュー使用時は無視されます)
+COCON_RDP_USER=user
+COCON_RDP_DOMAIN=domain
+COCON_RDP_RFX=1 追加のリダイレクト(マイク、映像)とRemoteFXを有効にする
+
+
+
