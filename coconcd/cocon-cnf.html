@@ -1,0 +1,649 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Made with Remarkable!
+  </title>
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
+  </script>
+  <script>
+   hljs.initHighlightingOnLoad();
+  </script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   MathJax.Hub.Config({"showProcessingMessages" : false,"messageStyle" : "none","tex2jax": { inlineMath: [ [ "$", "$" ] ] }});
+  </script>
+  <style type="text/css">
+   body{font:16px Helvetica,Arial,sans-serif;line-height:1.4;color:#333;word-wrap:break-word;background-color:#fff;padding:10px 15px}strong{font-weight:700}h1{font-size:2em;margin:.67em 0;text-align:center}h2{font-size:1.75em}h3{font-size:1.5em}h4{font-size:1.25em}h1,h2,h3,h4,h5,h6{font-weight:700;position:relative;margin-top:15px;margin-bottom:15px;line-height:1.1}h1,h2{border-bottom:1px solid #eee}hr{height:0;margin:15px 0;overflow:hidden;background:0 0;border:0;border-bottom:1px solid #ddd}a{color:#4183C4}a.absent{color:#c00}ol,ul{padding-left:15px;margin-left:5px}ol{list-style-type:lower-roman}table{padding:0}table tr{border-top:1px solid #ccc;background-color:#fff;margin:0;padding:0}table tr:nth-child(2n){background-color:#aaa}table tr th{font-weight:700;border:1px solid #ccc;text-align:left;margin:0;padding:6px 13px}table tr td{border:1px solid #ccc;text-align:left;margin:0;padding:6px 13px}table tr td :first-child,table tr th :first-child{margin-top:0}table tr td:last-child,table tr th :last-child{margin-bottom:0}img{max-width:100%}code{padding:0 5px;background-color:#d3d3d3}blockquote{padding: 0 15px;border-left:4px solid #ccc}
+  </style>
+ </head>
+ <body id="MathPreviewF">
+  <h1 id="coconcnf">
+   cocon.cnf
+  </h1>
+  <h2 id="_1">
+   概要
+  </h2>
+  <p>
+   cocon.cnf は、 opencocon において、カスタム設定を提供するファイルです。通常 opencocon は”Read-only アーキテクチャ”を採用しており、設定やデータの恒久的な保存をする手段を提供していないため、その代わりとなるものです。
+   <br/>
+   あらかじめ cocon.cnf を用意し、opencocon の起動時に読み込ませることにより、一部の設定や接続の自動化を行うことができます。
+  </p>
+  <p>
+   基本的には、 opencocon の起動時に、おのおのの認識できるディスクのルートディレクトリにある cocon.cnf ファイルを読み込もうとします。読み込みに成功した場合、 opencocon はいくつかフィルタを通した後に cocon.cnf の内容をメモリにコピーし、 opencocon 内の各種コマンドで使用できるようになります。
+  </p>
+  <h2 id="_2">
+   設置方法
+  </h2>
+  <p>
+   opencocon が認識できるUSBメモリ、ハードディスク、CD等
+   <sub>
+    ※
+   </sub>
+   (現時点ではFAT, NTFS, ext3, ext4, iso9660ファイルシステム) のルートディレクトリに
+   <strong>
+    cocon.cnf
+   </strong>
+   というテキストファイルを作成し、その中に Windows の INI ファイルのように設定項目を記述します。
+  </p>
+  <p>
+   ※ Raspberry Pi版のSDカードでは、 FAT 側・ ext3 側のどちらのパーティションにも置くことができます。
+  </p>
+  <p>
+   ファイル内の文字コードはUTF-8としますが、改行コードはWindows式、UNIX式のどちらでも正しく認識します。
+  </p>
+  <h2 id="_3">
+   設定項目
+  </h2>
+  <h3 id="_4">
+   システム
+  </h3>
+  <h4 id="cocon_kbd_console">
+   COCON_KBD_CONSOLE
+  </h4>
+  <p>
+   X以外のコンソール画面上でのキーマップを指定します。日本語キーボードの場合は以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_KBD_CONSOLE=jp106
+   </p>
+  </blockquote>
+  <p>
+   初期値：指定なし(=us)
+   <br/>
+   備考：opencoconではXでないコンソールを通常使用しません。
+  </p>
+  <h4 id="cocon_kbd_x_model">
+   COCON_KBD_X_MODEL
+  </h4>
+  <p>
+   X.org上でのキーボードモデルを指定します。日本語キーボードの場合は以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_KBD_X_MODEL=jp106
+   </p>
+  </blockquote>
+  <p>
+   初期値：jp106
+  </p>
+  <h4 id="cocon_kbd_x_layout">
+   COCON_KBD_X_LAYOUT
+  </h4>
+  <p>
+   X.org上でのキーボードレイアウトを指定します。日本語キーボードの場合は以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_KBD_X_LAYOUT=jp
+   </p>
+  </blockquote>
+  <p>
+   初期値：jp
+  </p>
+  <h4 id="cocon_kbd_x_variant">
+   COCON_KBD_X_VARIANT
+  </h4>
+  <p>
+   X.org上でのキーボードバリアントを指定します。
+  </p>
+  <p>
+   初期値：なし
+  </p>
+  <h4 id="cocon_mute_master_on_boot">
+   COCON_MUTE_MASTER_ON_BOOT
+  </h4>
+  <p>
+   このパラメータに 1 を指定すると、 opencocon 起動時に、最初のサウンドカードのマスターボリュームを 0 (ミュート)します。
+  </p>
+  <p>
+   例えば、以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_MUTE_MASTER_ON_BOOT=1
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+   <br/>
+   注意： COCON_MUTE_MASTER_ON_BOOT と COCON_MASTER_VOLUME の両方が指定されている場合、ミュートの方が優先されます。
+  </p>
+  <h4 id="cocon_master_volume">
+   COCON_MASTER_VOLUME
+  </h4>
+  <p>
+   このパラメータを指定すると、 opencocon 起動時、最初のサウンドカードのマスターボリュームを、0〜100(%)の範囲で指定することができます。
+  </p>
+  <p>
+   例えば、50%の場合は以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_MASTER_VOLUME=50
+   </p>
+  </blockquote>
+  <p>
+   ※ 本来音量調整はコンピュータや周辺環境毎に指定されるべきですが、このパラメータは cocon.cnf を読み込むすべての環境で一律に音量を設定します。指定の際はこの点、十分注意していただきますようお願いします。
+  </p>
+  <p>
+   初期値：なし
+   <br/>
+   注意： COCON_MUTE_MASTER_ON_BOOT と COCON_MASTER_VOLUME の両方が指定されている場合、ミュートの方が優先されます。
+  </p>
+  <h3 id="_5">
+   自動接続
+  </h3>
+  <h4 id="cocon_autoconnect">
+   COCON_AUTOCONNECT
+  </h4>
+  <p>
+   自動接続を使用する場合、このパラメータにプロトコルを指定します。
+   <br/>
+   使用できる値は以下の通りです。
+  </p>
+  <ul>
+   <li>
+    spice
+   </li>
+   <li>
+    rdp
+   </li>
+   <li>
+    vnc
+   </li>
+   <li>
+    www (Webブラウザ)
+   </li>
+   <li>
+    x (XDMCP)
+   </li>
+  </ul>
+  <p>
+   例えば、RDPに自動接続する場合は、以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_AUTOCONNECT=rdp
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+   <br/>
+   備考：自動接続を有効にするには、おのおののプロトコルの設定項目を記述する必要があります。
+  </p>
+  <h4 id="cocon_autovpn">
+   COCON_AUTOVPN
+  </h4>
+  <p>
+   起動時の自動VPN接続を使用する場合、このパラメータにプロトコルを指定します。
+   <br/>
+   使用できる値は以下の通りです。
+  </p>
+  <ul>
+   <li>
+    se (SoftEther)
+   </li>
+  </ul>
+  <p>
+   例えば、SoftEtherに接続する場合は、以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_AUTOVPN=se
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+   <br/>
+   備考：自動接続を有効にするには、おのおののプロトコルの設定項目を記述する必要があります。
+   <br/>
+   備考：今後、複数のプロトコルが可能になった場合は複数指定できるようにする予定です。ただし、1プロトコルあたり1セッションのみの制限を設ける予定です。
+  </p>
+  <h4 id="cocon_poweroff_after_autoconnect">
+   COCON_POWEROFF_AFTER_AUTOCONNECT
+  </h4>
+  <p>
+   このパラメータに1を指定すると、自動接続セッションの後、自動的にシャットダウンします。それ以外の場合、自動接続セッションの後は通常のメニューが表示されます。
+  </p>
+  <blockquote>
+   <p>
+    COCON_POWEROFF_AFTER_AUTOCONNECT=1
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+  </p>
+  <h3 id="rdp">
+   RDP
+  </h3>
+  <h4 id="cocon_rdp_host">
+   COCON_RDP_HOST
+  </h4>
+  <p>
+   RDPプロトコルによる自動接続時のホスト名/IPアドレスを指定します。例えば、以下のように指定します。
+   <br/>
+   ポート番号を指定する場合は、ホスト名の後に「:3330」のように指定してください。
+  </p>
+  <blockquote>
+   <p>
+    COCON_RDP_HOST=hostname
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+  </p>
+  <h4 id="cocon_rdp_user">
+   COCON_RDP_USER
+  </h4>
+  <p>
+   RDPプロトコルによる自動接続時のユーザ名を指定します。以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_RDP_USER=user
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+  </p>
+  <h4 id="cocon_rdp_domain">
+   COCON_RDP_DOMAIN
+  </h4>
+  <p>
+   RDPプロトコルによる自動接続時のユーザ名を指定します。以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_RDP_DOMAIN=domain
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+  </p>
+  <h4 id="cocon_rdp_rfx">
+   COCON_RDP_RFX
+  </h4>
+  <p>
+   このスイッチを1にすると、追加のリダイレクト(マイク、映像)とRemoteFXを有効にします。以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_RDP_RFX=1
+   </p>
+  </blockquote>
+  <p>
+   初期値：0 (無効)
+   <br/>
+   備考：自動接続が有効でなくてもこのパラメータは機能します。
+  </p>
+  <h4 id="cocon_rdp_modem">
+   COCON_RDP_MODEM
+  </h4>
+  <p>
+   このスイッチを1にすると、RDP接続は、Windows Vista以降のウィンドウデコレーションが省かれる等が行われ、低速接続用のプロファイルになります。以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_RDP_MODEM=1
+   </p>
+  </blockquote>
+  <p>
+   初期値：0 (無効)
+   <br/>
+   備考：自動接続が有効でなくてもこのパラメータは機能します。
+  </p>
+  <h4 id="cocon_rdp_kbd">
+   COCON_RDP_KBD
+  </h4>
+  <p>
+   FreeRDPにおける、キーボード配列を指定します。例えば、以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_RDP_KBD=jp
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+   <br/>
+   備考：通常はX.orgのキー配列から指定するので指定する必要はありません。
+  </p>
+  <h3 id="vnc">
+   VNC
+  </h3>
+  <h4 id="cocon_vnc_host">
+   COCON_VNC_HOST
+  </h4>
+  <p>
+   VNCプロトコルによる自動接続時のホスト名/IPアドレスを指定します。例えば、以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_VNC_HOST=hostname
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+   <br/>
+   備考： ” : ” の後にディスプレイ番号を指定することができます。
+  </p>
+  <h4 id="cocon_vnc_user">
+   COCON_VNC_USER
+  </h4>
+  <p>
+   VNCプロトコルによる自動接続時のユーザ名を指定します。例えば、以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_VNC_USER=user
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+   <br/>
+   備考：v9d以前のバージョンでは、libvncviewerを使用した接続においてこのオプションは無視されます。
+  </p>
+  <h3 id="spice">
+   SPICE
+  </h3>
+  <h4 id="cocon_spice_host">
+   COCON_SPICE_HOST
+  </h4>
+  <p>
+   SPICEプロトコルによる自動接続時のホスト名/IPアドレスを指定します。例えば、以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_SPICE_HOST=hostname
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+   <br/>
+   備考：ここにポート番号を指定することはできません。 COCON_SPICE_(TLS)PORT のいずれかに指定してください。
+  </p>
+  <h4 id="cocon_spice_port">
+   COCON_SPICE_PORT
+  </h4>
+  <p>
+   SPICEプロトコルによる自動接続時のポート番号(暗号化なしの場合)を指定します。例えば、以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_SPICE_PORT=5900
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+  </p>
+  <h4 id="cocon_spice_tlsport">
+   COCON_SPICE_TLSPORT
+  </h4>
+  <p>
+   SPICEプロトコルによる自動接続時のポート番号(TLS暗号化ありの場合)を指定します。例えば、以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_SPICE_TLSPORT=5901
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+  </p>
+  <h3 id="xdmcp">
+   XDMCP
+  </h3>
+  <h4 id="cocon_x_host">
+   COCON_X_HOST
+  </h4>
+  <p>
+   XDMCPによる自動接続時のホスト名/IPアドレスを指定します。例えば、以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_X_HOST=hostname
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+  </p>
+  <h3 id="web">
+   Webブラウザ
+  </h3>
+  <h4 id="cocon_x_host_1">
+   COCON_X_HOST
+  </h4>
+  <p>
+   Webブラウザの自動起動設定を有効にした場合、最初に開くにURLを指定します。例えば、以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_WWW_START=
+    <a href="http://opencocon.org/">
+    </a>
+    <a href="http://opencocon.org/">
+     http://opencocon.org/
+    </a>
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+  </p>
+  <h3 id="softether">
+   SoftEther
+  </h3>
+  <h4 id="cocon_se_host">
+   COCON_SE_HOST
+  </h4>
+  <p>
+   SoftEtherによる自動接続時のホスト名/IPアドレスとポート名を指定します。例えば、以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_SE_HOST=hostname:443
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+   <br/>
+   注意：現在のところ、ポート番号は自動補完されません。必ず指定する必要があります。
+  </p>
+  <h4 id="cocon_se_user">
+   COCON_SE_USER
+  </h4>
+  <p>
+   SoftEtherによる自動接続時のユーザ名を指定します。例えば、以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_SE_USER=user
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+  </p>
+  <h4 id="cocon_se_hub">
+   COCON_SE_HUB
+  </h4>
+  <p>
+   SoftEtherによる自動接続時の仮想名を指定します。例えば、以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_SE_USER=VPN
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+  </p>
+  <h4 id="cocon_se_auth_method">
+   COCON_SE_AUTH_METHOD
+  </h4>
+  <p>
+   SoftEtherによる自動接続時の認証手段を指定します。以下のパラメータを指定することができます。
+  </p>
+  <ul>
+   <li>
+    pass (パスワード認証)
+   </li>
+   <li>
+    anon (匿名認証)
+   </li>
+  </ul>
+  <p>
+   例えば、以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_SE_AUTH_METHOD=pass
+   </p>
+  </blockquote>
+  <p>
+   初期値：なし
+   <br/>
+   備考：今後他の認証手段を追加する予定です。
+  </p>
+  <h4 id="cocon_se_set_gateway_onvpn">
+   COCON_SE_SET_GATEWAY_ONVPN
+  </h4>
+  <p>
+   SoftEtherによる自動接続時が確立後、opencocon のデフォルトゲートウェイをVPN接続先のものにしたい場合、1を指定します。
+  </p>
+  <p>
+   例えば、以下のように指定します。
+  </p>
+  <blockquote>
+   <p>
+    COCON_SE_SET_GATEWAY_ONVPN=1
+   </p>
+  </blockquote>
+  <p>
+   初期値：0 (デフォルトゲートウェイは変更されません)
+  </p>
+  <h2 id="_6">
+   制限
+  </h2>
+  <ul>
+   <li>
+    <p>
+     任意のコードを cocon.cnf にて実行することはできません。必要な要素などがあれば、ディストリビューション自体のカスタマイズを行うか、フォーラムにて機能の提案を行っていただくと有り難いです。こちらでも検討致します。
+    </p>
+   </li>
+   <li>
+    <p>
+     複数プロファイルの作成にはまだ対応していませんが、今後対応する予定です。
+    </p>
+   </li>
+   <li>
+    <p>
+     組み合わせによっては、不具合が生じることがあります。
+    </p>
+   </li>
+  </ul>
+  <h2 id="_7">
+   付録
+  </h2>
+  <h3 id="coconcnf_1">
+   cocon.cnf を読み込む順番
+  </h3>
+  <p>
+   以下の順番に読み込みますが、同じ設定項目が複数ドライブにあった場合、反映される順番は上下逆となります。
+   <br/>
+   (1) ここんイメージ内 /usr/share/cocon/default.cnf
+   <br/>
+   (2) 起動ディスクのルートディレクトリにある cocon.cnf
+   <br/>
+   (3) それ以外のディスクのトップにある cocon.cnf (探索順になるため指定はできません)
+  </p>
+  <h3 id="networkmanager">
+   NetworkManagerの設定
+  </h3>
+  <p>
+   注意：これは暫定仕様です。今後変わることがあります。
+  </p>
+  <p>
+   opencocon 以外の、NetworkManager を用いるLinuxディストリビューションにおいて、 /etc/NetworkManager/system-connections/ 内にある接続設定ファイル(拡張子なし)を USB メモリ等のルートディレクトリに作成した
+   <strong>
+    coconnm
+   </strong>
+   ディレクトリ内にコピーすると、その設定をopencocon起動時に読み込みます。
+  </p>
+  <p>
+   ディストリビューションによっては、WPA等のパスワードは平文で格納されています。取り扱いには注意するようお願いします。
+  </p>
+  <h3 id="_8">
+   ファームウェアの読み込み
+  </h3>
+  <p>
+   ライセンスの関係上ファームウェアをバンドルできない、いくつかの無線LANチップ向けに、別のハードディスク・USBメモリからファームウェアを読み込むようになっています。
+  </p>
+  <p>
+   opencocon 以外の Linux ディストリビューションにて coconfrm-downloader スクリプト(opencoconのCDに同梱しています)をホームディレクトリ等にコピーして実行し、出来た
+   <strong>
+    coconfrm
+   </strong>
+   ディレクトリをハードディスク・USBメモリ等のルートディレクトリ直下にコピーしてください。
+  </p>
+  <p>
+   この方法でなければファームウェアが読み込めないチップは以下の通りです。いずれも、一部の旧型PCに内蔵されていたり、あるいはCardBusカードに搭載されています。
+  </p>
+  <ul>
+   <li>
+    Broadcom bcm43xx
+   </li>
+   <li>
+    Prism54 (p54usb, p54pci)
+   </li>
+   <li>
+    Intel ipw2100, ipw2200
+   </li>
+  </ul>
+  <h2 id="_9">
+   バージョン
+  </h2>
+  <p>
+   このドキュメントは opencocon v9f 用に書かれています。他のバージョンでは挙動が異なることがあります。
+  </p>
+  <h2 id="_10">
+   ライセンス
+  </h2>
+  <p>
+   このドキュメントは opencocon の一部として、以下のライセンスが適用されます。
+  </p>
+  <p>
+   Creator : SHIMADA Hirofumi
+  </p>
+  <p>
+   This work is licensed under the Creative Commons Attribution 3.0 Unported License. To view a copy of this license, visit
+   <a href="http://creativecommons.org/licenses/by/3.0/">
+    http://creativecommons.org/licenses/by/3.0/
+   </a>
+   or send a letter to Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, USA.
+  </p>
+ </body>
+</html>

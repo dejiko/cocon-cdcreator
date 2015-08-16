@@ -66,6 +66,7 @@ then
 
   # Create CD image
   genisoimage -v -r -J -o $CURPWD/opencocon-$3-$IMAGE_DATE.iso -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -A OPENCOCON $WORKDIR/
+  isohybrid --ctrlhd0 $CURPWD/opencocon-$3-$IMAGE_DATE.iso
 
   if [ ! -r $CURPWD/opencocon-$3-$IMAGE_DATE.iso ];
   then
