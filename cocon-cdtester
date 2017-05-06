@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ -n "$1" ];
+then
+
+  echo "Now testing KVM on mashiro : $1 #mashiroBuild" | toot
+
+  echo "==============="
+  echo "Remember that you must connect SSH with port forwarding:"
+  echo "ssh -l $USER -L 5900:127.0.0.1:5900 [hostname]"
+  echo "==============="
+
+  kvm -cpu kvm32 -smp 1 -boot d -cdrom "$1" -m 128M -k ja -vga qxl -balloon virtio -vnc "127.0.0.1:0" -netdev user,id=vmnic -device "virtio-net,netdev=vmnic"
+  ret=$?
+
+  echo "Stopped KVM on mashiro : $1 (return code $ret) #mashiroBuild" | toot
+
+else
+  echo "Usage : $0 [isofile]"
+fi
+
+
