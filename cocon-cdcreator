@@ -2,15 +2,25 @@
 
 # opencocon CD creator
 
-if [ ! `echo $SYSLINUX_BIN_PATH` ];
+export FLAVOR="thinclient"
+
+
+if [ ! "`echo $SYSLINUX_BIN_PATH`" ];
 then
   SYSLINUX_BIN_PATH="/usr/lib/syslinux/"
 fi
 
+
+if [ ! "`echo $ISOLINUX_PATH`" ];
+then
+  ISOLINUX_PATH="/usr/lib/ISOLINUX/"
+fi
+
+
 if [ $3 ];
 then
 
-  if [ ! `which genisoimage` ];
+  if [ ! "`which genisoimage`" ];
   then
     echo "Error: genisoimage is not found."
     exit 2
@@ -24,14 +34,15 @@ then
   mkdir -p $WORKDIR/isolinux/
 
   # Copy isolinux
-  if [ ! -r $SYSLINUX_BIN_PATH/isolinux.bin ];
+  if [ ! -r $ISOLINUX_PATH/isolinux.bin ];
   then
     echo "Error: isolinux.bin is not found. Please specify SYSLINUX_BIN_PATH."
     exit 2
   fi
 
-  cp -L $SYSLINUX_BIN_PATH/isolinux.bin  $WORKDIR/isolinux/isolinux.bin
-  cp -L $SYSLINUX_BIN_PATH/menu.c32  $WORKDIR/isolinux/menu.c32
+  cp -L $ISOLINUX_PATH/isolinux.bin  $WORKDIR/isolinux/isolinux.bin
+  cp -L $SYSLINUX_BIN_PATH/modules/bios/menu.c32  $WORKDIR/isolinux/menu.c32
+  cp -L $SYSLINUX_BIN_PATH/modules/bios/ldlinux.c32 $WORKDIR/isolinux/ldlinux.c32
 
   # Copy image to work directory
   if [ ! -r $1/bzImage-cocon486.bin ];
@@ -51,13 +62,13 @@ then
   cp -L $1/opencocon-cocon486.squashfs  $WORKDIR/crusoe.sqs
 
 
-  if [ ! -r $1/initramfs-crusoe-image-cocon486.cramfs.gz ];
+  if [ ! -r $1/initramfs-crusoe-image-cocon486.squashfs ];
   then
-    echo "Error: initramfs-crusoe-image-cocon486.cramfs.gz is not found."
+    echo "Error: initramfs-crusoe-image-cocon486.squashfs is not found."
     exit 2
   fi
 
-  cp -L $1/initramfs-crusoe-image-cocon486.cramfs.gz  $WORKDIR/crusoe.gz
+  cp -L $1/initramfs-crusoe-image-cocon486.squashfs  $WORKDIR/early.sqs
 
 
   # Copy some file from define directory
@@ -65,16 +76,17 @@ then
 
 
   # Create CD image
-  genisoimage -v -r -J -o $CURPWD/opencocon-$3-$IMAGE_DATE.iso -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -A OPENCOCON $WORKDIR/
-  isohybrid --ctrlhd0 $CURPWD/opencocon-$3-$IMAGE_DATE.iso
+  iso_filename="$CURPWD/opencocon-$FLAVOR-$3-$IMAGE_DATE.iso"
+  genisoimage -v -r -J -o $iso_filename -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -A OPENCOCON $WORKDIR/
+  isohybrid --ctrlhd0 $iso_filename
 
-  if [ ! -r $CURPWD/opencocon-$3-$IMAGE_DATE.iso ];
+  if [ ! -r "$iso_filename" ];
   then
     echo "Error: genisoimage failed."
     exit 2
   fi
   cd $CURPWD
-  md5sum opencocon-$3-$IMAGE_DATE.iso > $CURPWD/opencocon-$3-$IMAGE_DATE.iso.md5
+  md5sum $iso_filename > "${iso_filename}.md5"
 
 
 else
