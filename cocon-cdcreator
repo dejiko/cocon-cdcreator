@@ -43,6 +43,8 @@ then
   cp -L $ISOLINUX_PATH/isolinux.bin  $WORKDIR/isolinux/isolinux.bin
   cp -L $SYSLINUX_BIN_PATH/modules/bios/menu.c32  $WORKDIR/isolinux/menu.c32
   cp -L $SYSLINUX_BIN_PATH/modules/bios/ldlinux.c32 $WORKDIR/isolinux/ldlinux.c32
+  cp -L $SYSLINUX_BIN_PATH/modules/bios/libutil.c32 $WORKDIR/isolinux/libutil.c32
+  cp -L $SYSLINUX_BIN_PATH/modules/bios/menu.c32 $WORKDIR/isolinux/menu.c32
 
   # Copy image to work directory
   if [ ! -r $1/bzImage-cocon486.bin ];
